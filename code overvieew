@@ -1,0 +1,68 @@
+// Sound Sensor
+const int soundSensor = A0;
+// Emoji LEDs
+const int redLED = 2;
+const int blueLED = 3;
+const int greenLED = 4;
+// Seat LEDs
+const int seat1 = 5;
+const int seat2 = 6;
+const int seat3 = 7;
+const int seat4 = 8;
+void setup()
+{
+Serial.begin(9600);
+pinMode(redLED, OUTPUT);
+pinMode(blueLED, OUTPUT);
+pinMode(greenLED, OUTPUT);
+}
+pinMode(seat1, OUTPUT);
+pinMode(seat2, OUTPUT);
+pinMode(seat3, OUTPUT);
+pinMode(seat4, OUTPUT);
+void loop()
+{
+long total = 0;
+for (int i = 0; i < 10; i++)
+{
+total = total + analogRead(soundSensor);
+delay(10);}
+// Calculate average
+int value = total / 10;
+Serial.print("Filtered Sound Value: ");
+Serial.println(value);
+digitalWrite(redLED, LOW);
+digitalWrite(blueLED, LOW);
+digitalWrite(greenLED, LOW);
+digitalWrite(seat1, LOW);
+digitalWrite(seat2, LOW);
+digitalWrite(seat3, LOW);
+digitalWrite(seat4, LOW);
+if (value < 350)
+{
+digitalWrite(greenLED, HIGH);
+}
+Serial.println("Status: QUIET - HAPPY");
+else if (value < 450)
+{
+digitalWrite(blueLED, HIGH);
+}
+Serial.println("Status: MODERATE - NEUTRAL");
+else if (value < 500)
+{
+digitalWrite(redLED, HIGH);
+}
+Serial.println("Status: LOUD - ANGRY");
+else
+{
+digitalWrite(redLED, HIGH);
+digitalWrite(seat1, HIGH);
+digitalWrite(seat2, HIGH);
+digitalWrite(seat3, HIGH);
+digitalWrite(seat4, HIGH);
+}
+Serial.println("Status: VERY LOUD - SILENCE!");
+Serial.println("WARNING: ALL SEATS ON");Serial.println("------------------------");
+}
+delay(100);
+}
